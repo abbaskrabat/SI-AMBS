@@ -519,7 +519,7 @@
                     <td class="px-4 py-3 text-sm">${index + 1}</td>
                     <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
                     <td class="px-4 py-3 text-sm font-semibold">${item.namaLengkap}</td>
-                    <td class="px-4 py-3 text-sm">${item.nik || '-'}</td>
+                    <!-- <td class="px-4 py-3 text-sm">${item.nik || '-'}</td> -->
                     <td class="px-4 py-3 text-sm">${item.jk || '-'}</td>
                     <td class="px-4 py-3 text-sm text-right">
                         ${(user.role === 'admin' || user.role === 'pengurus' || user.role === 'guru') ? 
@@ -547,13 +547,13 @@
                                     <th class="px-4 py-3">No</th>
                                     <th class="px-4 py-3">ID</th>
                                     <th class="px-4 py-3">Nama Lengkap</th>
-                                    <th class="px-4 py-3">NIK</th>
+                                    <!-- <th class="px-4 py-3">NIK</th> -->
                                     <th class="px-4 py-3">L/P</th>
                                     <th class="px-4 py-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ${rows.length ? rows : '<tr><td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>'}
+                                ${rows.length ? rows : '<tr><td colspan="5" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>'}
                             </tbody>
                         </table>
                     </div>
