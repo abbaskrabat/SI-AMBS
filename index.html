@@ -247,7 +247,8 @@
             <div class="flex items-center justify-center h-full bg-slate-100">
                 <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
                     <div class="text-center mb-6">
-                        <img src="https://ui-avatars.com/api/?name=Al+Amaanah&background=0D8ABC&color=fff&rounded=true" alt="Logo" class="w-20 h-20 mx-auto mb-2">
+                        <!-- <img src="https://ui-avatars.com/api/?name=Al+Amaanah&background=0D8ABC&color=fff&rounded=true" alt="Logo" class="w-20 h-20 mx-auto mb-2"> -->
+                        <i class="fas fa-mosque text-4xl text-success mb-3"></i>
                         <h2 class="text-2xl font-bold text-gray-800">SIM Al Amaanah</h2>
                         <p class="text-sm text-gray-500">Sistem Informasi Manajemen Pesantren</p>
                         ${IS_DEMO ? '<span class="inline-block mt-2 bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Demo Mode Active</span>' : ''}
@@ -258,18 +259,18 @@
                         <form id="form-login">
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">NIK</label>
-                                <input type="text" id="login-nik" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan 16 Digit NIK">
+                                <input type="text" id="login-nik" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Masukkan 16 Digit NIK">
                             </div>
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                <input type="password" id="login-pass" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Password (Demo admin: admin)">
+                                <input type="password" id="login-pass" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500" placeholder="Password (Demo admin: admin)">
                             </div>
-                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex justify-center items-center">
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg flex justify-center items-center">
                                 <span id="login-text">Masuk</span>
                                 <div id="login-loader" class="hidden loader w-5 h-5 border-2 border-white rounded-full ml-2"></div>
                             </button>
                         </form>
-                        <p class="mt-4 text-center text-sm">Belum punya akun? <a href="#" id="go-register" class="text-blue-600 hover:underline">Daftar sekarang</a></p>
+                        <p class="mt-4 text-center text-sm">Belum punya akun? <a href="#" id="go-register" class="text-green-600 hover:underline">Daftar sekarang</a></p>
                     </div>
 
                     <!-- Register Form -->
@@ -277,7 +278,7 @@
                         <form id="form-register">
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Daftar Sebagai</label>
-                                <select id="reg-role" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                <select id="reg-role" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
                                     <option value="santri">Santri</option>
                                     <option value="guru">Guru</option>
                                     <option value="pengurus">Pengurus</option>
@@ -301,7 +302,7 @@
                                 <div id="reg-loader" class="hidden loader w-5 h-5 border-2 border-white rounded-full ml-2"></div>
                             </button>
                         </form>
-                        <p class="mt-4 text-center text-sm">Sudah punya akun? <a href="#" id="go-login" class="text-blue-600 hover:underline">Kembali ke Login</a></p>
+                        <p class="mt-4 text-center text-sm">Sudah punya akun? <a href="#" id="go-login" class="text-green-600 hover:underline">Kembali ke Login</a></p>
                     </div>
                 </div>
             </div>`;
@@ -358,36 +359,36 @@
         }
 
         function getAppHTML(user) {
-            let menuHTML = `<a href="#" data-view="dashboard" class="nav-btn block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 bg-blue-700"><i class="fas fa-home mr-2 w-5"></i> Dashboard</a>`;
+            let menuHTML = `<a href="#" data-view="dashboard" class="nav-btn block py-2.5 px-4 rounded transition duration-200 hover:bg-green-700 bg-green-700"><i class="fas fa-home mr-2 w-5"></i> Dashboard</a>`;
             
             if (user.role === 'admin' || user.role === 'pengurus' || user.role === 'guru') {
                 menuHTML += `
-                    <p class="px-4 mt-4 mb-2 text-xs font-semibold text-blue-300 uppercase tracking-wider">Data Master</p>
-                    <a href="#" data-view="crud" data-entity="santri" class="nav-btn block py-2 px-4 rounded transition hover:bg-blue-700"><i class="fas fa-user-graduate mr-2 w-5"></i> Data Santri</a>
-                    <a href="#" data-view="crud" data-entity="guru" class="nav-btn block py-2 px-4 rounded transition hover:bg-blue-700"><i class="fas fa-chalkboard-teacher mr-2 w-5"></i> Data Guru</a>
-                    <a href="#" data-view="crud" data-entity="pengurus" class="nav-btn block py-2 px-4 rounded transition hover:bg-blue-700"><i class="fas fa-users-cog mr-2 w-5"></i> Data Pengurus</a>
-                    <a href="#" data-view="crud" data-entity="admin" class="nav-btn block py-2 px-4 rounded transition hover:bg-blue-700"><i class="fas fa-user-shield mr-2 w-5"></i> Data Admin</a>
+                    <p class="px-4 mt-4 mb-2 text-xs font-semibold text-green-300 uppercase tracking-wider">Data Master</p>
+                    <a href="#" data-view="crud" data-entity="santri" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user-graduate mr-2 w-5"></i> Data Santri</a>
+                    <a href="#" data-view="crud" data-entity="guru" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-chalkboard-teacher mr-2 w-5"></i> Data Guru</a>
+                    <a href="#" data-view="crud" data-entity="pengurus" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-users-cog mr-2 w-5"></i> Data Pengurus</a>
+                    <a href="#" data-view="crud" data-entity="admin" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user-shield mr-2 w-5"></i> Data Admin</a>
                 `;
             } else if (user.role === 'santri') {
                  menuHTML += `
-                    <p class="px-4 mt-4 mb-2 text-xs font-semibold text-blue-300 uppercase tracking-wider">Pribadi</p>
-                    <a href="#" data-view="profile" data-entity="santri" class="nav-btn block py-2 px-4 rounded transition hover:bg-blue-700"><i class="fas fa-user mr-2 w-5"></i> Data Diri</a>
+                    <p class="px-4 mt-4 mb-2 text-xs font-semibold text-green-300 uppercase tracking-wider">Pribadi</p>
+                    <a href="#" data-view="profile" data-entity="santri" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user mr-2 w-5"></i> Data Diri</a>
                 `;
             }
 
             if (user.role === 'admin' || user.role === 'pengurus') {
                 menuHTML += `
-                    <p class="px-4 mt-4 mb-2 text-xs font-semibold text-blue-300 uppercase tracking-wider">Sistem</p>
-                    <a href="#" data-view="users" class="nav-btn block py-2 px-4 rounded transition hover:bg-blue-700"><i class="fas fa-users mr-2 w-5"></i> Kelola User</a>
+                    <p class="px-4 mt-4 mb-2 text-xs font-semibold text-green-300 uppercase tracking-wider">Sistem</p>
+                    <a href="#" data-view="users" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-users mr-2 w-5"></i> Kelola User</a>
                 `;
             }
 
             return `
             <div class="flex h-screen bg-gray-100 font-sans">
                 <!-- Sidebar -->
-                <div class="w-64 bg-blue-900 text-white flex flex-col hidden md:flex shrink-0 z-20">
-                    <div class="p-4 flex items-center shadow-md bg-blue-950">
-                        <i class="fas fa-mosque text-2xl mr-3 text-blue-300"></i>
+                <div class="w-64 bg-green-900 text-white flex flex-col hidden md:flex shrink-0 z-20">
+                    <div class="p-4 flex items-center shadow-md bg-green-950">
+                        <i class="fas fa-mosque text-2xl mr-3 text-green-300"></i>
                         <span class="text-xl font-bold tracking-wide">SIM PAA</span>
                     </div>
                     <div class="overflow-y-auto hide-scroll flex-1 p-3 space-y-1">
@@ -410,7 +411,7 @@
                                 <p class="text-sm font-semibold text-gray-700">${user.namaLengkap}</p>
                                 <p class="text-xs text-gray-500 capitalize">${user.role}</p>
                             </div>
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">
                                 ${user.namaLengkap.charAt(0).toUpperCase()}
                             </div>
                             <button onclick="logout()" class="text-red-500 hover:text-red-700" title="Logout"><i class="fas fa-sign-out-alt text-xl"></i></button>
@@ -443,10 +444,10 @@
                     e.preventDefault();
                     // Update active class
                     document.querySelectorAll('.nav-btn').forEach(b => {
-                        b.classList.remove('bg-blue-700');
-                        if(b.dataset.view === 'crud') b.classList.remove('bg-blue-700');
+                        b.classList.remove('bg-green-700');
+                        if(b.dataset.view === 'crud') b.classList.remove('bg-green-700');
                     });
-                    btn.classList.add('bg-blue-700');
+                    btn.classList.add('bg-green-700');
 
                     currentView = btn.dataset.view;
                     currentEntity = btn.dataset.entity;
@@ -460,7 +461,7 @@
             const title = document.getElementById('page-title');
             const user = getUserSession();
             
-            container.innerHTML = `<div class="flex justify-center items-center h-64"><div class="loader w-10 h-10 border-4 border-blue-200 rounded-full"></div></div>`;
+            container.innerHTML = `<div class="flex justify-center items-center h-64"><div class="loader w-10 h-10 border-4 border-green-200 rounded-full"></div></div>`;
 
             if (view === 'dashboard') {
                 title.innerText = 'Dashboard';
@@ -486,8 +487,8 @@
             if(IS_DEMO) {
                 statsHTML = `
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-                    <div class="bg-white rounded-xl shadow p-6 border-l-4 border-blue-500">
-                        <div class="flex items-center justify-between"><h3 class="text-gray-500 font-semibold">Total Santri</h3><i class="fas fa-user-graduate text-blue-200 text-2xl"></i></div>
+                    <div class="bg-white rounded-xl shadow p-6 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between"><h3 class="text-gray-500 font-semibold">Total Santri</h3><i class="fas fa-user-graduate text-green-200 text-2xl"></i></div>
                         <p class="text-3xl font-bold mt-2">${dummyDB.santri.length}</p>
                     </div>
                     <div class="bg-white rounded-xl shadow p-6 border-l-4 border-green-500">
@@ -516,13 +517,13 @@
                 rows += `
                 <tr class="border-b hover:bg-gray-50">
                     <td class="px-4 py-3 text-sm">${index + 1}</td>
-                    <td class="px-4 py-3 text-sm font-medium text-blue-600">${item.id || '-'}</td>
+                    <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
                     <td class="px-4 py-3 text-sm font-semibold">${item.namaLengkap}</td>
                     <td class="px-4 py-3 text-sm">${item.nik || '-'}</td>
                     <td class="px-4 py-3 text-sm">${item.jk || '-'}</td>
                     <td class="px-4 py-3 text-sm text-right">
                         ${(user.role === 'admin' || user.role === 'pengurus' || user.role === 'guru') ? 
-                        `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-blue-500 hover:text-blue-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
+                        `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
                         ${(user.role === 'admin' || user.role === 'pengurus') ? 
                         `<button onclick='deleteData("${entity}", "${item.id}")' class="text-red-500 hover:text-red-700" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
                     </td>
@@ -533,11 +534,11 @@
                 <div class="bg-white rounded-xl shadow overflow-hidden">
                     <div class="p-4 border-b flex justify-between items-center bg-gray-50">
                         <div class="relative w-64">
-                            <input type="text" id="searchData" placeholder="Cari data..." class="w-full pl-10 pr-4 py-2 rounded-lg border text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+                            <input type="text" id="searchData" placeholder="Cari data..." class="w-full pl-10 pr-4 py-2 rounded-lg border text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
                             <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
                         </div>
                         ${(user.role === 'admin' || user.role === 'pengurus') ? 
-                        `<button onclick='openFormModal("${entity}")' class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium"><i class="fas fa-plus mr-2"></i>Tambah Data</button>` : ''}
+                        `<button onclick='openFormModal("${entity}")' class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium"><i class="fas fa-plus mr-2"></i>Tambah Data</button>` : ''}
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left whitespace-nowrap">
@@ -586,17 +587,17 @@
                     <label class="block text-xs font-semibold text-gray-700 mb-1">${field.label} ${labelReq}</label>`;
                 
                 if (field.type === 'select') {
-                    formHTML += `<select name="${field.name}" ${reqStr} class="w-full px-3 py-2 border rounded text-sm focus:ring-blue-500 focus:border-blue-500">
+                    formHTML += `<select name="${field.name}" ${reqStr} class="w-full px-3 py-2 border rounded text-sm focus:ring-green-500 focus:border-green-500">
                         <option value="">-- Pilih --</option>
                         ${field.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
                     </select>`;
                 } else if (field.type === 'textarea') {
-                    formHTML += `<textarea name="${field.name}" ${reqStr} rows="2" class="w-full px-3 py-2 border rounded text-sm focus:ring-blue-500 focus:border-blue-500">${val}</textarea>`;
+                    formHTML += `<textarea name="${field.name}" ${reqStr} rows="2" class="w-full px-3 py-2 border rounded text-sm focus:ring-green-500 focus:border-green-500">${val}</textarea>`;
                 } else {
                     let pat = field.pattern ? `pattern="${field.pattern}" title="Harus sesuai format"` : '';
                     let typ = field.type === 'number' ? 'number' : 'text'; // Fallback to text to preserve leading zeros if not strict math number
                     if(field.name === 'nik' || field.name === 'noKk') typ = 'text'; // Mencegah 0 hilang
-                    formHTML += `<input type="${typ}" name="${field.name}" value="${val}" ${reqStr} ${pat} class="w-full px-3 py-2 border rounded text-sm focus:ring-blue-500 focus:border-blue-500">`;
+                    formHTML += `<input type="${typ}" name="${field.name}" value="${val}" ${reqStr} ${pat} class="w-full px-3 py-2 border rounded text-sm focus:ring-green-500 focus:border-green-500">`;
                 }
                 formHTML += `</div>`;
             });
@@ -604,7 +605,7 @@
             formHTML += `</div>
                 <div class="mt-6 flex justify-end space-x-3 pt-4 border-t">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 font-medium">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-medium flex items-center">
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium flex items-center">
                         <span id="save-text">Simpan Data</span>
                         <div id="save-loader" class="hidden loader w-4 h-4 border-2 border-white rounded-full ml-2"></div>
                     </button>
