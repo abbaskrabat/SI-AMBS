@@ -45,25 +45,29 @@
         };
 
         const schemas = {
-            basePersonal: {
-                title: "Data Personil Dasar",
-                fields: [
-                    { name: 'namaLengkap', label: 'Nama Lengkap', type: 'text', req: true },
-                    { name: 'namaPanggilan', label: 'Nama Panggilan', type: 'text', req: true },
-                    { name: 'nik', label: 'NIK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
-                    { name: 'noKk', label: 'No KK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
-                    { name: 'password', label: 'Password Akun', type: 'text', req: true },
-                    { name: 'jk', label: 'Jenis Kelamin', type: 'select', options: ['Laki-laki', 'Perempuan'], req: true },
-                    { name: 'tempatLahir', label: 'Tempat Lahir', type: 'text', req: true },
-                    { name: 'tglLahir', label: 'Tanggal Lahir', type: 'date', req: true },
-                    { name: 'golDarah', label: 'Golongan Darah', type: 'select', options: ['A', 'B', 'AB', 'O', 'Tidak Tahu'] },
-                ]
-            },
+            basePersonal: [
+                { name: 'namaLengkap', label: 'Nama Lengkap', type: 'text', req: true },
+                { name: 'namaPanggilan', label: 'Nama Panggilan', type: 'text', req: true },
+                { name: 'nik', label: 'NIK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
+                { name: 'noKk', label: 'No KK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
+                { name: 'password', label: 'Password Akun', type: 'text', req: true },
+                { name: 'jk', label: 'Jenis Kelamin', type: 'select', options: ['Laki-laki', 'Perempuan'], req: true },
+                { name: 'tempatLahir', label: 'Tempat Lahir', type: 'text', req: true },
+                { name: 'tglLahir', label: 'Tanggal Lahir', type: 'date', req: true },
+                { name: 'golDarah', label: 'Golongan Darah', type: 'select', options: ['A', 'B', 'AB', 'O', 'Tidak Tahu'] },
+            ],
+            baseEduS: [
+                { name: 'statusBelajar', label: 'Status Belajar', type: 'select', options: ['Aktif', 'Lulus'] },
+                { name: 'jenjang', label: 'Jenjang Pendidikan', type: 'select', options: ['TK', 'SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'] },
+                { name: 'instansi', label: 'Instansi Pendidikan', type: 'text' },
+                { name: 'jurusan', label: 'Jurusan', type: 'text' },
+            ],
             baseEdu: [
                 { name: 'statusBelajar', label: 'Status Belajar', type: 'select', options: ['Aktif', 'Lulus'] },
                 { name: 'jenjang', label: 'Jenjang Pendidikan', type: 'select', options: ['TK', 'SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'] },
                 { name: 'instansi', label: 'Instansi Pendidikan', type: 'text' },
                 { name: 'jurusan', label: 'Jurusan', type: 'text' },
+                { name: 'tglIjazah', label: 'Tanggal Ijazah', type: 'date' },
             ],
             baseAddress: [
                 { name: 'alamat', label: 'Alamat (Jalan/Dusun)', type: 'text' },
@@ -73,10 +77,10 @@
                 { name: 'kec', label: 'Kecamatan', type: 'text' },
                 { name: 'kab', label: 'Kabupaten/Kota', type: 'text' },
                 { name: 'prov', label: 'Provinsi', type: 'text' },
-                { name: 'mulaiMengaji', label: 'Mulai Mengaji', type: 'select', options: ['Lahir', 'Kecil', 'Remaja', 'Dewasa', 'Keluarga'] },
                 { name: 'sambungDaerah', label: 'Sambung Daerah', type: 'text' },
                 { name: 'sambungDesa', label: 'Sambung Desa', type: 'text' },
                 { name: 'sambungKelompok', label: 'Sambung Kelompok', type: 'text' },
+                { name: 'mulaiMengaji', label: 'Mulai Mengaji', type: 'select', options: ['Lahir', 'Kecil', 'Remaja', 'Dewasa', 'Keluarga'] },
             ],
             santriSpecific: [
                 { name: 'nism', label: 'NISM', type: 'text' },
@@ -100,7 +104,6 @@
                 { name: 'jmlSaudara', label: 'Jumlah Saudara', type: 'number' },
             ],
             guruSpecific: [
-                { name: 'tglIjazah', label: 'Tanggal Ijazah', type: 'date' },
                 { name: 'statusNikah', label: 'Status Pernikahan', type: 'select', options: ['Belum Menikah', 'Menikah', 'Cerai'] },
                 { name: 'namaPasangan', label: 'Nama Suami/Istri', type: 'text' },
                 { name: 'namaAyah', label: 'Nama Ayah Kandung', type: 'text' },
@@ -109,12 +112,32 @@
             ]
         };
 
-        // Menggabungkan schema menjadi schema lengkap per entitas
+        // Menggabungkan schema menjadi schema lengkap per entitas dengan pengelompokan
         const entitySchemas = {
-            santri: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.santriSpecific],
-            guru: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.guruSpecific],
-            pengurus: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.guruSpecific],
-            admin: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.guruSpecific]
+            santri: [
+                { id: 'personal', title: 'Data Personal', icon: 'fa-id-card', fields: schemas.basePersonal },
+                { id: 'specific', title: 'Data Spesifik Santri', icon: 'fa-user-graduate', fields: schemas.santriSpecific },
+                { id: 'education', title: 'Data Pendidikan', icon: 'fa-graduation-cap', fields: schemas.baseEduS },
+                { id: 'address', title: 'Data Alamat', icon: 'fa-map-marker-alt', fields: schemas.baseAddress }
+            ],
+            guru: [
+                { id: 'personal', title: 'Data Personal', icon: 'fa-id-card', fields: schemas.basePersonal },
+                { id: 'specific', title: 'Data Spesifik Guru', icon: 'fa-chalkboard-teacher', fields: schemas.guruSpecific },
+                { id: 'education', title: 'Data Pendidikan', icon: 'fa-graduation-cap', fields: schemas.baseEdu },
+                { id: 'address', title: 'Data Alamat', icon: 'fa-map-marker-alt', fields: schemas.baseAddress }
+            ],
+            pengurus: [
+                { id: 'personal', title: 'Data Personal', icon: 'fa-id-card', fields: schemas.basePersonal },
+                { id: 'specific', title: 'Data Spesifik Pengurus', icon: 'fa-users-cog', fields: schemas.guruSpecific },
+                { id: 'education', title: 'Data Pendidikan', icon: 'fa-graduation-cap', fields: schemas.baseEdu },
+                { id: 'address', title: 'Data Alamat', icon: 'fa-map-marker-alt', fields: schemas.baseAddress }
+            ],
+            admin: [
+                { id: 'personal', title: 'Data Personal', icon: 'fa-id-card', fields: schemas.basePersonal },
+                { id: 'specific', title: 'Data Spesifik Admin', icon: 'fa-user-shield', fields: schemas.guruSpecific },
+                { id: 'education', title: 'Data Pendidikan', icon: 'fa-graduation-cap', fields: schemas.baseEdu },
+                { id: 'address', title: 'Data Alamat', icon: 'fa-map-marker-alt', fields: schemas.baseAddress }
+            ]
         };
 
         function getUserSession() {
@@ -376,21 +399,24 @@
                 <a href="#" data-view="profile" data-entity="${user.role}" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user mr-2 w-5"></i> Data Diri / Akun</a>
             `;
 
-            // Hanya Admin yang dapat CRUD semua data akun
-            if (user.role === 'admin') {
+            // Admin, Pengurus, dan Guru bisa melihat Data Master (Santri tidak bisa)
+            if (user.role === 'admin' || user.role === 'pengurus' || user.role === 'guru') {
                 menuHTML += `
                     <p class="px-4 mt-4 mb-2 text-xs font-semibold text-green-300 uppercase tracking-wider">Data Master</p>
                     <a href="#" data-view="crud" data-entity="santri" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user-graduate mr-2 w-5"></i> Data Santri</a>
                     <a href="#" data-view="crud" data-entity="guru" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-chalkboard-teacher mr-2 w-5"></i> Data Guru</a>
                     <a href="#" data-view="crud" data-entity="pengurus" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-users-cog mr-2 w-5"></i> Data Pengurus</a>
                     <a href="#" data-view="crud" data-entity="admin" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user-shield mr-2 w-5"></i> Data Admin</a>
-                
+                `;
+            }
+
+            // Hanya Admin dan Pengurus yang bisa Kelola User
+            if (user.role === 'admin' || user.role === 'pengurus') {
+                menuHTML += `
                     <p class="px-4 mt-4 mb-2 text-xs font-semibold text-green-300 uppercase tracking-wider">Sistem</p>
                     <a href="#" data-view="users" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-users mr-2 w-5"></i> Kelola User</a>
                 `;
             }
-
-
 
             return `
             <div class="flex h-screen bg-gray-100 font-sans">
@@ -513,7 +539,7 @@
                 </div>
                 ${statsHTML}
                 <div class="bg-white p-8 rounded-xl shadow text-center text-gray-500">
-                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/mosque-4468725-3728613.png" class="w-48 mx-auto opacity-50 mb-4">
+                    <img src="https://cdni.iconscout.com/illustration/premium/thumb/mosque-4468725-3728613.png" class="w-48 mx-auto opacity-50 mb-4" alt="Mosque">
                     <p>Gunakan menu navigasi di samping untuk mengelola data.</p>
                 </div>
             `;
@@ -521,6 +547,9 @@
 
         function renderTable(container, entity, data) {
             const user = getUserSession();
+            // Cek apakah user berhak CRUD (Admin & Pengurus bisa semua. Guru mungkin hanya Read, atau CRUD sesuai kebijakan. Disini di set Admin/Pengurus bisa CRUD)
+            const canCRUD = user.role === 'admin' || user.role === 'pengurus';
+
             let rows = '';
             data.forEach((item, index) => {
                 rows += `
@@ -528,12 +557,12 @@
                     <td class="px-4 py-3 text-sm">${index + 1}</td>
                     <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
                     <td class="px-4 py-3 text-sm font-semibold">${item.namaLengkap}</td>
-                    <!-- <td class="px-4 py-3 text-sm">${item.nik || '-'}</td> -->
+                    <td class="px-4 py-3 text-sm">${item.nik || '-'}</td>
                     <td class="px-4 py-3 text-sm">${item.jk || '-'}</td>
                     <td class="px-4 py-3 text-sm text-right">
-                        ${user.role === 'admin' ? 
+                        ${canCRUD ? 
                         `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
-                        ${user.role === 'admin' ? 
+                        ${canCRUD ? 
                         `<button onclick='deleteData("${entity}", "${item.id}")' class="text-red-500 hover:text-red-700" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
                     </td>
                 </tr>`;
@@ -546,7 +575,7 @@
                             <input type="text" id="searchData" placeholder="Cari data..." class="w-full pl-10 pr-4 py-2 rounded-lg border text-sm focus:outline-none focus:ring-1 focus:ring-green-500">
                             <i class="fas fa-search absolute left-3 top-2.5 text-gray-400"></i>
                         </div>
-                        ${user.role === 'admin' ? 
+                        ${canCRUD ? 
                         `<button onclick='openFormModal("${entity}")' class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium"><i class="fas fa-plus mr-2"></i>Tambah Data</button>` : ''}
                     </div>
                     <div class="overflow-x-auto">
@@ -556,13 +585,13 @@
                                     <th class="px-4 py-3">No</th>
                                     <th class="px-4 py-3">ID</th>
                                     <th class="px-4 py-3">Nama Lengkap</th>
-                                    <!-- <th class="px-4 py-3">NIK</th> -->
+                                    <th class="px-4 py-3">NIK</th>
                                     <th class="px-4 py-3">L/P</th>
                                     <th class="px-4 py-3 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                ${rows.length ? rows : '<tr><td colspan="5" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>'}
+                                ${rows.length ? rows : '<tr><td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>'}
                             </tbody>
                         </table>
                     </div>
@@ -581,47 +610,67 @@
         }
 
         function openFormModal(entity, data = null, inModal = true) {
-            const schema = entitySchemas[entity];
+            const sections = entitySchemas[entity];
             const isEdit = data !== null;
             
-            let formHTML = `<form id="master-form" onsubmit="saveData(event, '${entity}', '${isEdit ? data.id : ''}')">`;
-            formHTML += `<div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
+            let formHTML = `<form id="master-form" class="relative" onsubmit="saveData(event, '${entity}', '${isEdit ? data.id : ''}')">`;
+            formHTML += `<div class="space-y-6 pb-20">`; // Padding bottom untuk menghindari tertutup sticky footer
             
-            schema.forEach(field => {
-                let val = isEdit ? (data[field.name] || '') : '';
-                let reqStr = field.req ? 'required' : '';
-                let labelReq = field.req ? '<span class="text-red-500">*</span>' : '';
+            sections.forEach(section => {
+                formHTML += `
+                <div class="bg-gray-50 p-5 rounded-xl border border-gray-200 shadow-sm">
+                    <h4 class="text-md font-bold text-gray-800 mb-4 flex items-center border-b pb-2">
+                        <i class="fas ${section.icon} text-green-600 mr-2 w-6 text-center"></i> ${section.title}
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">`;
                 
-                formHTML += `<div class="mb-2">
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">${field.label} ${labelReq}</label>`;
+                section.fields.forEach(field => {
+                    let val = isEdit ? (data[field.name] || '') : '';
+                    let reqStr = field.req ? 'required' : '';
+                    let labelReq = field.req ? '<span class="text-red-500 ml-1">*</span>' : '';
+                    
+                    formHTML += `<div class="mb-2">
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">${field.label} ${labelReq}</label>`;
+                    
+                    if (field.type === 'select') {
+                        formHTML += `<select name="${field.name}" ${reqStr} class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white shadow-sm transition outline-none">
+                            <option value="">-- Pilih --</option>
+                            ${field.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+                        </select>`;
+                    } else if (field.type === 'textarea') {
+                        formHTML += `<textarea name="${field.name}" ${reqStr} rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white shadow-sm transition outline-none">${val}</textarea>`;
+                    } else {
+                        let pat = field.pattern ? `pattern="${field.pattern}" title="Harus sesuai format"` : '';
+                        let typ = field.type === 'number' ? 'number' : 'text'; 
+                        if(field.name === 'nik' || field.name === 'noKk') typ = 'text'; 
+                        formHTML += `<input type="${typ}" name="${field.name}" value="${val}" ${reqStr} ${pat} class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white shadow-sm transition outline-none">`;
+                    }
+                    formHTML += `</div>`;
+                });
                 
-                if (field.type === 'select') {
-                    formHTML += `<select name="${field.name}" ${reqStr} class="w-full px-3 py-2 border rounded text-sm focus:ring-green-500 focus:border-green-500">
-                        <option value="">-- Pilih --</option>
-                        ${field.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
-                    </select>`;
-                } else if (field.type === 'textarea') {
-                    formHTML += `<textarea name="${field.name}" ${reqStr} rows="2" class="w-full px-3 py-2 border rounded text-sm focus:ring-green-500 focus:border-green-500">${val}</textarea>`;
-                } else {
-                    let pat = field.pattern ? `pattern="${field.pattern}" title="Harus sesuai format"` : '';
-                    let typ = field.type === 'number' ? 'number' : 'text'; // Fallback to text to preserve leading zeros if not strict math number
-                    if(field.name === 'nik' || field.name === 'noKk') typ = 'text'; // Mencegah 0 hilang
-                    formHTML += `<input type="${typ}" name="${field.name}" value="${val}" ${reqStr} ${pat} class="w-full px-3 py-2 border rounded text-sm focus:ring-green-500 focus:border-green-500">`;
-                }
-                formHTML += `</div>`;
+                formHTML += `</div></div>`;
             });
             
             formHTML += `</div>
-                <div class="mt-6 flex justify-end space-x-3 pt-4 border-t">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 font-medium">Batal</button>
-                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 font-medium flex items-center">
-                        <span id="save-text">Simpan Data</span>
+                <div class="absolute bottom-0 left-0 w-full flex justify-end space-x-3 pt-4 border-t bg-white pb-1 z-10">
+                    <button type="button" onclick="closeModal()" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold transition">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold flex items-center transition shadow-md">
+                        <span id="save-text"><i class="fas fa-save mr-2"></i>Simpan Data</span>
                         <div id="save-loader" class="hidden loader w-4 h-4 border-2 border-white rounded-full ml-2"></div>
                     </button>
                 </div>
             </form>`;
 
-            document.getElementById('modal-title').innerText = `${isEdit ? 'Edit' : 'Tambah'} Data ${entity.toUpperCase()}`;
+            document.getElementById('modal-title').innerHTML = `
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                        <i class="fas ${isEdit ? 'fa-edit text-green-600' : 'fa-plus text-green-600'}"></i>
+                    </div>
+                    <span class="capitalize">${isEdit ? 'Edit' : 'Tambah'} Data ${entity}</span>
+                </div>`;
+            
+            // Tambahkan wrapper relative untuk menopang position absolute footer
+            document.getElementById('modal-body').classList.add('relative');
             document.getElementById('modal-body').innerHTML = formHTML;
             document.getElementById('modal-container').classList.remove('hidden');
         }
