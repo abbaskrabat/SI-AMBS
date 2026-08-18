@@ -45,17 +45,20 @@
         };
 
         const schemas = {
-            basePersonal: [
-                { name: 'namaLengkap', label: 'Nama Lengkap', type: 'text', req: true },
-                { name: 'namaPanggilan', label: 'Nama Panggilan', type: 'text', req: true },
-                { name: 'nik', label: 'NIK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
-                { name: 'noKk', label: 'No KK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
-                { name: 'password', label: 'Password Akun', type: 'text', req: true },
-                { name: 'jk', label: 'Jenis Kelamin', type: 'select', options: ['Laki-laki', 'Perempuan'], req: true },
-                { name: 'tempatLahir', label: 'Tempat Lahir', type: 'text', req: true },
-                { name: 'tglLahir', label: 'Tanggal Lahir', type: 'date', req: true },
-                { name: 'golDarah', label: 'Golongan Darah', type: 'select', options: ['A', 'B', 'AB', 'O', 'Tidak Tahu'] },
-            ],
+            basePersonal: {
+                title: "Data Personil Dasar",
+                fields: [
+                    { name: 'namaLengkap', label: 'Nama Lengkap', type: 'text', req: true },
+                    { name: 'namaPanggilan', label: 'Nama Panggilan', type: 'text', req: true },
+                    { name: 'nik', label: 'NIK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
+                    { name: 'noKk', label: 'No KK (16 Digit)', type: 'text', req: true, pattern: '\\d{16}' },
+                    { name: 'password', label: 'Password Akun', type: 'text', req: true },
+                    { name: 'jk', label: 'Jenis Kelamin', type: 'select', options: ['Laki-laki', 'Perempuan'], req: true },
+                    { name: 'tempatLahir', label: 'Tempat Lahir', type: 'text', req: true },
+                    { name: 'tglLahir', label: 'Tanggal Lahir', type: 'date', req: true },
+                    { name: 'golDarah', label: 'Golongan Darah', type: 'select', options: ['A', 'B', 'AB', 'O', 'Tidak Tahu'] },
+                ]
+            },
             baseEdu: [
                 { name: 'statusBelajar', label: 'Status Belajar', type: 'select', options: ['Aktif', 'Lulus'] },
                 { name: 'jenjang', label: 'Jenjang Pendidikan', type: 'select', options: ['TK', 'SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'] },
