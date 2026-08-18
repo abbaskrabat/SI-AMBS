@@ -61,7 +61,6 @@
                 { name: 'jenjang', label: 'Jenjang Pendidikan', type: 'select', options: ['TK', 'SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'] },
                 { name: 'instansi', label: 'Instansi Pendidikan', type: 'text' },
                 { name: 'jurusan', label: 'Jurusan', type: 'text' },
-                { name: 'mulaiMengaji', label: 'Mulai Mengaji', type: 'select', options: ['Lahir', 'Kecil', 'Remaja', 'Dewasa', 'Keluarga'] },
             ],
             baseAddress: [
                 { name: 'alamat', label: 'Alamat (Jalan/Dusun)', type: 'text' },
@@ -71,6 +70,7 @@
                 { name: 'kec', label: 'Kecamatan', type: 'text' },
                 { name: 'kab', label: 'Kabupaten/Kota', type: 'text' },
                 { name: 'prov', label: 'Provinsi', type: 'text' },
+                { name: 'mulaiMengaji', label: 'Mulai Mengaji', type: 'select', options: ['Lahir', 'Kecil', 'Remaja', 'Dewasa', 'Keluarga'] },
                 { name: 'sambungDaerah', label: 'Sambung Daerah', type: 'text' },
                 { name: 'sambungDesa', label: 'Sambung Desa', type: 'text' },
                 { name: 'sambungKelompok', label: 'Sambung Kelompok', type: 'text' },
@@ -108,10 +108,10 @@
 
         // Menggabungkan schema menjadi schema lengkap per entitas
         const entitySchemas = {
-            santri: [...schemas.basePersonal, ...schemas.santriSpecific, ...schemas.baseEdu, ...schemas.baseAddress],
-            guru: [...schemas.basePersonal, ...schemas.guruSpecific, ...schemas.baseEdu, ...schemas.baseAddress],
-            pengurus: [...schemas.basePersonal, ...schemas.guruSpecific, ...schemas.baseEdu, ...schemas.baseAddress],
-            admin: [...schemas.basePersonal, ...schemas.guruSpecific, ...schemas.baseEdu, ...schemas.baseAddress]
+            santri: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.santriSpecific],
+            guru: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.guruSpecific],
+            pengurus: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.guruSpecific],
+            admin: [...schemas.basePersonal, ...schemas.baseAddress, ...schemas.baseEdu, ...schemas.guruSpecific]
         };
 
         function getUserSession() {
