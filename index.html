@@ -41,6 +41,12 @@
             pengurus: [],
             admin: [
                 { id: "A2310001", namaLengkap: "Super Admin", nik: "1234567890123456", jk: "Laki-laki", statusAkun: "Aktif", password: "admin" }
+            ],
+            kelas: [
+                { id: "K2608001", namaKelas: "X IPA 1", jenjang: "SMA", waliKelas1: "Ust. Abdullah", waliKelas2: "", waliKelas3: "", kapasitas: "30", keterangan: "Ruang Utama Lantai 1" }
+            ],
+            kamar: [
+                { id: "K2608002", namaKamar: "Kamar Abu Bakar", gedung: "Gedung A Putra", kapasitas: "15", fasilitas: "Kipas Angin, Lemari Susun", pembina1: "Ust. Zaid", pembina2: "", pembina3: "", keterangan: "Kondisi Baik" }
             ]
         };
 
@@ -109,6 +115,25 @@
                 { name: 'namaAyah', label: 'Nama Ayah Kandung', type: 'text' },
                 { name: 'namaIbu', label: 'Nama Ibu Kandung', type: 'text' },
                 { name: 'tglTugas', label: 'Tanggal Mulai Bertugas', type: 'date' },
+            ],
+            kelasMaster: [
+                { name: 'namaKelas', label: 'Nama Kelas', type: 'text', req: true },
+                { name: 'jenjang', label: 'Jenjang Pendidikan', type: 'select', options: ['TK', 'SD', 'SMP', 'SMA', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'], req: true },
+                { name: 'waliKelas1', label: 'Wali Kelas 1', type: 'select', dynamic: 'guru' },
+                { name: 'waliKelas2', label: 'Wali Kelas 2', type: 'select', dynamic: 'guru' },
+                { name: 'waliKelas3', label: 'Wali Kelas 3', type: 'select', dynamic: 'guru' },
+                { name: 'kapasitas', label: 'Kapasitas Siswa', type: 'number' },
+                { name: 'keterangan', label: 'Keterangan Tambahan', type: 'textarea' },
+            ],
+            kamarMaster: [
+                { name: 'namaKamar', label: 'Nama Kamar / Asrama', type: 'text', req: true },
+                { name: 'gedung', label: 'Nama Gedung', type: 'text', req: true },
+                { name: 'kapasitas', label: 'Kapasitas Santri', type: 'number' },
+                { name: 'fasilitas', label: 'Fasilitas Tersedia', type: 'text' },
+                { name: 'pembina1', label: 'Pembina / Musyrif 1', type: 'select', dynamic: 'guru' },
+                { name: 'pembina2', label: 'Pembina / Musyrif 2', type: 'select', dynamic: 'guru' },
+                { name: 'pembina3', label: 'Pembina / Musyrif 3', type: 'select', dynamic: 'guru' },
+                { name: 'keterangan', label: 'Keterangan Tambahan', type: 'textarea' },
             ]
         };
 
@@ -137,6 +162,12 @@
                 { id: 'specific', title: 'Data Spesifik Admin', icon: 'fa-user-shield', fields: schemas.guruSpecific },
                 { id: 'education', title: 'Data Pendidikan', icon: 'fa-graduation-cap', fields: schemas.baseEdu },
                 { id: 'address', title: 'Data Alamat', icon: 'fa-map-marker-alt', fields: schemas.baseAddress }
+            ],
+            kelas: [
+                { id: 'info', title: 'Informasi Kelas', icon: 'fa-chalkboard', fields: schemas.kelasMaster }
+            ],
+            kamar: [
+                { id: 'info', title: 'Informasi Kamar', icon: 'fa-bed', fields: schemas.kamarMaster }
             ]
         };
 
@@ -232,7 +263,10 @@
                     if(idx > -1) arr[idx] = { ...arr[idx], ...p.data };
                 } else {
                     // Create
-                    const prefix = p.entity.charAt(0).toUpperCase();
+                    let prefix = p.entity.charAt(0).toUpperCase();
+                    if (p.entity === 'kelas') prefix = 'C';
+                    else if (p.entity === 'kamar') prefix = 'R';
+                    
                     const d = new Date();
                     const yymm = String(d.getFullYear()).slice(-2) + String(d.getMonth() + 1).padStart(2, '0');
                     const nextNum = String(arr.length + 1).padStart(3, '0');
@@ -407,6 +441,8 @@
                     <a href="#" data-view="crud" data-entity="guru" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-chalkboard-teacher mr-2 w-5"></i> Data Guru</a>
                     <a href="#" data-view="crud" data-entity="pengurus" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-users-cog mr-2 w-5"></i> Data Pengurus</a>
                     <a href="#" data-view="crud" data-entity="admin" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-user-shield mr-2 w-5"></i> Data Admin</a>
+                    <a href="#" data-view="crud" data-entity="kelas" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-chalkboard mr-2 w-5"></i> Data Kelas</a>
+                    <a href="#" data-view="crud" data-entity="kamar" class="nav-btn block py-2 px-4 rounded transition hover:bg-green-700"><i class="fas fa-bed mr-2 w-5"></i> Data Kamar</a>
                 `;
             }
 
@@ -551,22 +587,92 @@
             const canCRUD = user.role === 'admin' || user.role === 'pengurus';
 
             let rows = '';
-            data.forEach((item, index) => {
-                rows += `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="px-4 py-3 text-sm">${index + 1}</td>
-                    <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
-                    <td class="px-4 py-3 text-sm font-semibold">${item.namaLengkap}</td>
-                    <td class="px-4 py-3 text-sm">${item.nik || '-'}</td>
-                    <td class="px-4 py-3 text-sm">${item.jk || '-'}</td>
-                    <td class="px-4 py-3 text-sm text-right">
-                        ${canCRUD ? 
-                        `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
-                        ${canCRUD ? 
-                        `<button onclick='deleteData("${entity}", "${item.id}")' class="text-red-500 hover:text-red-700" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
-                    </td>
-                </tr>`;
-            });
+            let theadHTML = '';
+
+            if (entity === 'kelas') {
+                theadHTML = `
+                    <tr>
+                        <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">ID Kelas</th>
+                        <th class="px-4 py-3">Nama Kelas</th>
+                        <th class="px-4 py-3">Jenjang</th>
+                        <th class="px-4 py-3">Wali Kelas</th>
+                        <th class="px-4 py-3">Kapasitas</th>
+                        <th class="px-4 py-3 text-right">Aksi</th>
+                    </tr>`;
+                data.forEach((item, index) => {
+                    // Gabungkan wali kelas yang tidak kosong
+                    const wali = [item.waliKelas1, item.waliKelas2, item.waliKelas3].filter(Boolean).join(', ');
+                    
+                    rows += `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3 text-sm">${index + 1}</td>
+                        <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
+                        <td class="px-4 py-3 text-sm font-semibold">${item.namaKelas || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${item.jenjang || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${wali || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${item.kapasitas || '-'}</td>
+                        <td class="px-4 py-3 text-sm text-right">
+                            ${canCRUD ? `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
+                            ${canCRUD ? `<button onclick='deleteData("${entity}", "${item.id}")' class="text-red-500 hover:text-red-700" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
+                        </td>
+                    </tr>`;
+                });
+            } else if (entity === 'kamar') {
+                theadHTML = `
+                    <tr>
+                        <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">ID Kamar</th>
+                        <th class="px-4 py-3">Nama Kamar</th>
+                        <th class="px-4 py-3">Gedung</th>
+                        <th class="px-4 py-3">Pembina / Musyrif</th>
+                        <th class="px-4 py-3">Kapasitas</th>
+                        <th class="px-4 py-3 text-right">Aksi</th>
+                    </tr>`;
+                data.forEach((item, index) => {
+                    // Gabungkan pembina yang tidak kosong
+                    const musyrif = [item.pembina1, item.pembina2, item.pembina3].filter(Boolean).join(', ');
+
+                    rows += `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3 text-sm">${index + 1}</td>
+                        <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
+                        <td class="px-4 py-3 text-sm font-semibold">${item.namaKamar || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${item.gedung || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${musyrif || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${item.kapasitas || '-'}</td>
+                        <td class="px-4 py-3 text-sm text-right">
+                            ${canCRUD ? `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
+                            ${canCRUD ? `<button onclick='deleteData("${entity}", "${item.id}")' class="text-red-500 hover:text-red-700" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
+                        </td>
+                    </tr>`;
+                });
+            } else {
+                // Entitas Akun/User (Santri, Guru, dll)
+                theadHTML = `
+                    <tr>
+                        <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">ID</th>
+                        <th class="px-4 py-3">Nama Lengkap</th>
+                        <th class="px-4 py-3">NIK</th>
+                        <th class="px-4 py-3">L/P</th>
+                        <th class="px-4 py-3 text-right">Aksi</th>
+                    </tr>`;
+                data.forEach((item, index) => {
+                    rows += `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3 text-sm">${index + 1}</td>
+                        <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
+                        <td class="px-4 py-3 text-sm font-semibold">${item.namaLengkap || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${item.nik || '-'}</td>
+                        <td class="px-4 py-3 text-sm">${item.jk || '-'}</td>
+                        <td class="px-4 py-3 text-sm text-right">
+                            ${canCRUD ? `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
+                            ${canCRUD ? `<button onclick='deleteData("${entity}", "${item.id}")' class="text-red-500 hover:text-red-700" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
+                        </td>
+                    </tr>`;
+                });
+            }
 
             container.innerHTML = `
                 <div class="bg-white rounded-xl shadow overflow-hidden">
@@ -581,17 +687,10 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left whitespace-nowrap">
                             <thead class="bg-gray-100 text-gray-600 text-xs uppercase font-semibold">
-                                <tr>
-                                    <th class="px-4 py-3">No</th>
-                                    <th class="px-4 py-3">ID</th>
-                                    <th class="px-4 py-3">Nama Lengkap</th>
-                                    <th class="px-4 py-3">NIK</th>
-                                    <th class="px-4 py-3">L/P</th>
-                                    <th class="px-4 py-3 text-right">Aksi</th>
-                                </tr>
+                                ${theadHTML}
                             </thead>
                             <tbody>
-                                ${rows.length ? rows : '<tr><td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>'}
+                                ${rows.length ? rows : `<tr><td colspan="7" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>`}
                             </tbody>
                         </table>
                     </div>
@@ -609,10 +708,30 @@
             });
         }
 
-        function openFormModal(entity, data = null, inModal = true) {
+        async function openFormModal(entity, data = null, inModal = true) {
             const sections = entitySchemas[entity];
             const isEdit = data !== null;
             
+            // --- LOGIKA FETCH DATA GURU DINAMIS ---
+            let dynamicOptions = { guru: [] };
+            const needsGuru = sections.some(sec => sec.fields.some(f => f.dynamic === 'guru'));
+            
+            if (needsGuru) {
+                // Munculkan indikator loading di modal selama menarik data Guru
+                document.getElementById('modal-title').innerHTML = '<div class="flex items-center text-gray-600"><i class="fas fa-spinner fa-spin mr-3"></i> Menyiapkan Form...</div>';
+                document.getElementById('modal-body').innerHTML = '<div class="flex justify-center py-12"><div class="loader w-10 h-10 border-4 border-green-200 rounded-full"></div></div>';
+                document.getElementById('modal-container').classList.remove('hidden');
+                
+                const res = await apiRequest('get', { entity: 'guru' });
+                if (res.success) {
+                    // Ambil hanya nama guru yang status akunnya Aktif
+                    dynamicOptions.guru = res.data
+                        .filter(g => g.statusAkun === 'Aktif')
+                        .map(g => g.namaLengkap);
+                }
+            }
+            // --------------------------------------
+
             let formHTML = `<form id="master-form" class="relative" onsubmit="saveData(event, '${entity}', '${isEdit ? data.id : ''}')">`;
             formHTML += `<div class="space-y-6 pb-20">`; // Padding bottom untuk menghindari tertutup sticky footer
             
@@ -633,9 +752,11 @@
                         <label class="block text-xs font-semibold text-gray-700 mb-1">${field.label} ${labelReq}</label>`;
                     
                     if (field.type === 'select') {
+                        // Tentukan apakah menggunakan opsi statis atau dinamis dari Guru
+                        let opts = field.dynamic ? dynamicOptions[field.dynamic] : field.options;
                         formHTML += `<select name="${field.name}" ${reqStr} class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white shadow-sm transition outline-none">
                             <option value="">-- Pilih --</option>
-                            ${field.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+                            ${(opts || []).map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
                         </select>`;
                     } else if (field.type === 'textarea') {
                         formHTML += `<textarea name="${field.name}" ${reqStr} rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white shadow-sm transition outline-none">${val}</textarea>`;
