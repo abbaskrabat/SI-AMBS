@@ -213,12 +213,24 @@
                 try {
                     const res = await fetch(GAS_URL, {
                         method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8'
+                        },
                         body: JSON.stringify({ action, ...payload })
                     });
-                    return await res.json();
+                    
+                    const text = await res.text();
+                    
+                    try {
+                        return JSON.parse(text);
+                    } catch (parseError) {
+                        console.error("Non-JSON response dari server:", text.substring(0, 200) + "...");
+                        throw new Error("URL Google Apps Script tidak valid atau akses ditolak. Pastikan URL benar dan di-deploy dengan akses 'Siapa saja' (Anyone).");
+                    }
+                    
                 } catch (e) {
                     console.error("API Error", e);
-                    alert("Koneksi ke database gagal. Menggunakan mode fallback sementara.");
+                    alert("Koneksi ke database gagal: " + e.message + "\n\nPastikan Anda telah melakukan Setup Google Apps Script sesuai panduan README.");
                     return { success: false, message: e.message };
                 }
             }
@@ -257,11 +269,11 @@
             if (action === 'save') {
                 const arr = dummyDB[p.entity];
                 if (p.id) {
-                    // Update
+                    // update
                     const idx = arr.findIndex(x => x.id === p.id);
                     if(idx > -1) arr[idx] = { ...arr[idx], ...p.data };
                 } else {
-                    // Create
+                    // create
                     let prefix = p.entity.charAt(0).toUpperCase();
                     if (p.entity === 'kelas') prefix = 'C';
                     else if (p.entity === 'kamar') prefix = 'R';
@@ -308,9 +320,6 @@
             <div class="flex items-center justify-center h-full bg-slate-100">
                 <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
                     <div class="text-center mb-6">
-                        <!-- <img src="https://ui-avatars.com/api/?name=Al+Amaanah&background=0D8ABC&color=fff&rounded=true" alt="Logo" class="w-20 h-20 mx-auto mb-2"> -->
-                        <!-- <i class="fas fa-mosque text-4xl text-green-500 mb-3"></i> -->
-                        <!-- Tambahkan flex, justify-center, dan items-center pada pembungkusnya -->
                         <div class="flex justify-center items-center mb-3">
                             <img src="Logo AMBS.png" alt="Logo AMBS" class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24">
                         </div>
@@ -459,7 +468,7 @@
                 <div class="w-64 bg-green-900 text-white flex flex-col hidden md:flex shrink-0 z-20">
                     <div class="p-4 flex items-center shadow-md bg-green-950">
                         <i class="fas fa-mosque text-2xl mr-3 text-green-300"></i>
-                        <span class="text-xl font-bold tracking-wide">SIM PAA</span>
+                        <span class="text-xl font-bold tracking-wide">SI AMBS</span>
                     </div>
                     <div class="overflow-y-auto hide-scroll flex-1 p-3 space-y-1">
                         ${menuHTML}
@@ -557,7 +566,7 @@
                 title.innerText = 'Data Diri / Akun Anda';
                 const res = await apiRequest('get', { entity });
                 const myData = (res.data || []).find(x => x.id === user.id) || user;
-                openFormModal(entity, myData, false); // Buka langsung sebagai form
+                openFormModal(entity, myData, false); 
                 container.innerHTML = `<div class="bg-white p-6 rounded shadow text-center"><p>Edit data dilakukan melalui jendela pop-up. Jika tertutup, klik navigasi "Data Diri / Akun" kembali.</p></div>`;
             } else if (view === 'users') {
                 title.innerText = 'Kelola User Akun';
@@ -675,7 +684,7 @@
                         <th class="px-4 py-3">No</th>
                         <th class="px-4 py-3">ID</th>
                         <th class="px-4 py-3">Nama Lengkap</th>
-                        <th class="px-4 py-3">NIK</th>
+                        <!-- <th class="px-4 py-3">NIK</th> -->
                         <th class="px-4 py-3">L/P</th>
                         <th class="px-4 py-3 text-right">Aksi</th>
                     </tr>`;
@@ -685,7 +694,7 @@
                         <td class="px-4 py-3 text-sm">${index + 1}</td>
                         <td class="px-4 py-3 text-sm font-medium text-green-600">${item.id || '-'}</td>
                         <td class="px-4 py-3 text-sm font-semibold">${item.namaLengkap || '-'}</td>
-                        <td class="px-4 py-3 text-sm">${item.nik || '-'}</td>
+                        <!-- <td class="px-4 py-3 text-sm">${item.nik || '-'}</td> -->
                         <td class="px-4 py-3 text-sm">${item.jk || '-'}</td>
                         <td class="px-4 py-3 text-sm text-right">
                             ${canCRUD ? `<button onclick='openFormModal("${entity}", ${JSON.stringify(item).replace(/'/g, "&#39;")})' class="text-green-500 hover:text-green-700 mr-2" title="Edit"><i class="fas fa-edit"></i></button>` : ''}
@@ -711,7 +720,7 @@
                                 ${theadHTML}
                             </thead>
                             <tbody>
-                                ${rows.length ? rows : `<tr><td colspan="7" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>`}
+                                ${rows.length ? rows : `<tr><td colspan="6" class="text-center py-6 text-gray-500">Tidak ada data</td></tr>`}
                             </tbody>
                         </table>
                     </div>
